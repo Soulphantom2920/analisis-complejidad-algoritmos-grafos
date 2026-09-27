@@ -2,13 +2,14 @@ package medicion;
 
 /**
  * Fecha de inicio: 25/09/2026
- * Fecha de última modificación: 25/09/2026
+ * Última modificación: 26/09/2026
  *
- * Almacena los resultados de la medición empírica obtenidos durante
- * la ejecución de un algoritmo.
+ * Almacena las métricas obtenidas después de ejecutar un algoritmo.
  *
- * Esta clase conserva la cantidad de asignaciones, comparaciones,
- * líneas ejecutadas y el tiempo de ejecución medido en nanosegundos.
+ * Esta clase forma parte de la infraestructura de medición y no de los
+ * algoritmos analizados. Por tanto, la creación de un objeto Metricas
+ * no se incluye dentro de los contadores del algoritmo ni dentro de su
+ * tiempo de ejecución.
  */
 public class Metricas {
 
@@ -18,57 +19,37 @@ public class Metricas {
     private final long tiempoNanosegundos;
 
     /**
-     * Crea un objeto con los resultados obtenidos durante la medición
-     * de un algoritmo.
+     * Construye el conjunto de métricas de una ejecución.
      *
-     * @param asignaciones cantidad de asignaciones ejecutadas
-     * @param comparaciones cantidad de comparaciones ejecutadas
-     * @param lineasEjecutadas cantidad de líneas ejecutadas
-     * @param tiempoNanosegundos tiempo de ejecución en nanosegundos
+     * @param asignaciones cantidad de asignaciones.
+     * @param comparaciones cantidad de comparaciones.
+     * @param lineasEjecutadas cantidad de líneas ejecutadas.
+     * @param tiempoNanosegundos tiempo de ejecución en nanosegundos.
      */
-    public Metricas(long asignaciones,
-                    long comparaciones,
-                    long lineasEjecutadas,
-                    long tiempoNanosegundos) {
-
+    public Metricas(
+            long asignaciones,
+            long comparaciones,
+            long lineasEjecutadas,
+            long tiempoNanosegundos
+    ) {
         this.asignaciones = asignaciones;
         this.comparaciones = comparaciones;
         this.lineasEjecutadas = lineasEjecutadas;
         this.tiempoNanosegundos = tiempoNanosegundos;
     }
 
-    /**
-     * Obtiene la cantidad de asignaciones ejecutadas.
-     *
-     * @return cantidad de asignaciones
-     */
     public long getAsignaciones() {
         return asignaciones;
     }
 
-    /**
-     * Obtiene la cantidad de comparaciones ejecutadas.
-     *
-     * @return cantidad de comparaciones
-     */
     public long getComparaciones() {
         return comparaciones;
     }
 
-    /**
-     * Obtiene la cantidad de líneas ejecutadas.
-     *
-     * @return cantidad de líneas ejecutadas
-     */
     public long getLineasEjecutadas() {
         return lineasEjecutadas;
     }
 
-    /**
-     * Obtiene el tiempo de ejecución medido en nanosegundos.
-     *
-     * @return tiempo de ejecución en nanosegundos
-     */
     public long getTiempoNanosegundos() {
         return tiempoNanosegundos;
     }
