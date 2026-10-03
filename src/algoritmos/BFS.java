@@ -1,17 +1,17 @@
 package algoritmos;
 
 /**
- * Fecha de inicio: 26/09/2026
- * Última modificación: 26/09/2026
+ * Start date: 26/09/2026
+ * Last modification date: 02/10/2026
  *
- * Implementa el algoritmo Breadth-First Search (BFS) de forma iterativa
- * sobre una matriz de adyacencia.
+ * Implements the Breadth-First Search (BFS) algorithm iteratively
+ * over an adjacency matrix.
  *
- * La cola utilizada por BFS se implementa mediante un arreglo y dos
- * índices para que todas las operaciones realizadas por el algoritmo
- * sean explícitas y puedan medirse según la metodología del curso.
+ * The queue used by BFS is implemented with an array and two
+ * indices so that all operations performed by the algorithm
+ * are explicit and can be measured according to the course methodology.
  *
- * Se registran asignaciones, comparaciones y líneas ejecutadas.
+ * Assignments, comparisons, and executed lines are recorded.
  */
 public class BFS {
 
@@ -22,170 +22,195 @@ public class BFS {
     private int[] recorrido;
 
     /**
-     * Ejecuta BFS desde un vértice de origen.
+     * Executes BFS from a source vertex.
      *
-     * @param matrizAdyacencia matriz que representa el grafo.
-     * @param origen índice del vértice desde el cual inicia el recorrido.
+     * @param matrizAdyacencia matrix that represents the graph.
+     * @param origen index of the vertex from which the traversal starts.
      */
     public void ejecutar(int[][] matrizAdyacencia, int origen) {
 
-        // Reinicio de instrumentos de medición.
+        // Reset measurement instruments before starting a new execution.
         asignaciones = 0;
         comparaciones = 0;
         lineasEjecutadas = 0;
 
-        // Paso de los dos parámetros por valor.
+        // Count the assignment produced by passing both parameters by value.
         asignaciones += 2;
 
-        // Ejecución de la cabecera del método.
+        // Count the execution of the method header.
         lineasEjecutadas++;
 
+        // Obtain the number of vertices represented by the adjacency matrix.
         int cantidadVertices = matrizAdyacencia.length;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Create the structure used to mark visited vertices.
         boolean[] visitados = new boolean[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
 
+        // Create the array-based queue used by the iterative BFS.
         int[] cola = new int[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
 
+        // Allocate the array that stores the traversal result.
         recorrido = new int[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
 
+        // Initialize the queue front index.
         int frente = 0;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Initialize the queue insertion index.
         int fin = 0;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Initialize the position used to store vertices in the traversal.
         int indiceRecorrido = 0;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Mark the source vertex as visited.
         visitados[origen] = true;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Insert the source vertex into the queue.
         cola[fin] = origen;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Advance the next insertion position.
         fin++;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Continue while the queue contains vertices to process.
         while (frente < fin) {
 
-            // Evaluación verdadera de la condición del ciclo.
+            // Count the true evaluation of the loop condition.
             comparaciones++;
             lineasEjecutadas++;
 
+            // Remove the next vertex from the front of the queue.
             int actual = cola[frente];
             asignaciones++;
             lineasEjecutadas++;
 
+            // Advance the queue front.
             frente++;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Store the processed vertex in traversal order.
             recorrido[indiceRecorrido] = actual;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Advance the next position of the traversal array.
             indiceRecorrido++;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Start examining possible neighbors from vertex zero.
             int vecino = 0;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Examine every possible neighbor in the adjacency matrix row.
             while (vecino < cantidadVertices) {
 
-                // Evaluación verdadera del ciclo de vecinos.
+                // Count the true evaluation of the neighbor loop condition.
                 comparaciones++;
                 lineasEjecutadas++;
 
-                // Determina si existe una arista.
+                // Check whether an edge exists between both vertices.
                 comparaciones++;
                 lineasEjecutadas++;
 
                 if (matrizAdyacencia[actual][vecino] != 0) {
 
-                    // Determina si el vértice todavía no ha sido visitado.
+                    // Check whether the neighboring vertex has not been visited.
                     comparaciones++;
                     lineasEjecutadas++;
 
                     if (!visitados[vecino]) {
 
+                        // Mark the newly discovered vertex as visited.
                         visitados[vecino] = true;
                         asignaciones++;
                         lineasEjecutadas++;
 
+                        // Insert the vertex into the BFS queue.
                         cola[fin] = vecino;
                         asignaciones++;
                         lineasEjecutadas++;
 
+                        // Advance the next insertion position.
                         fin++;
                         asignaciones++;
                         lineasEjecutadas++;
                     }
                 }
 
+                // Continue with the next possible neighbor.
                 vecino++;
                 asignaciones++;
                 lineasEjecutadas++;
             }
 
-            // Evaluación falsa final del ciclo de vecinos.
+            // Count the final false evaluation of the neighbor loop.
             comparaciones++;
             lineasEjecutadas++;
         }
 
-        // Evaluación falsa final del ciclo principal.
+        // Count the final false evaluation of the main BFS loop.
         comparaciones++;
         lineasEjecutadas++;
     }
 
     /**
-     * Obtiene el recorrido generado por la última ejecución de BFS.
+     * Returns the traversal generated by the last BFS execution.
      *
-     * @return arreglo con los vértices en orden de recorrido.
+     * @return array containing the vertices in traversal order.
      */
     public int[] getRecorrido() {
+        // Return the traversal produced by the latest execution.
         return recorrido;
     }
 
     /**
-     * Obtiene la cantidad de asignaciones realizadas por BFS.
+     * Returns the number of assignments performed by BFS.
      *
-     * @return cantidad de asignaciones.
+     * @return number of assignments.
      */
     public long getAsignaciones() {
+        // Return the assignment counter.
         return asignaciones;
     }
 
     /**
-     * Obtiene la cantidad de comparaciones realizadas por BFS.
+     * Returns the number of comparisons performed by BFS.
      *
-     * @return cantidad de comparaciones.
+     * @return number of comparisons.
      */
     public long getComparaciones() {
+        // Return the comparison counter.
         return comparaciones;
     }
 
     /**
-     * Obtiene la cantidad de líneas ejecutadas por BFS.
+     * Returns the number of lines executed by BFS.
      *
-     * @return cantidad de líneas ejecutadas.
+     * @return number of executed lines.
      */
     public long getLineasEjecutadas() {
+        // Return the executed-line counter.
         return lineasEjecutadas;
     }
 }

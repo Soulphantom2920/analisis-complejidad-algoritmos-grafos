@@ -1,16 +1,16 @@
 package algoritmos;
 
 /**
- * Fecha de inicio: 28/09/2026
- * Última modificación: 28/09/2026
+ * Start date: 28/09/2026
+ * Last modification date: 02/10/2026
  *
- * Implementa el algoritmo de Dijkstra sobre una matriz de adyacencia.
+ * Implements Dijkstra's algorithm over an adjacency matrix.
  *
- * El algoritmo calcula la distancia mínima desde un vértice de origen
- * hacia todos los demás vértices del grafo. La selección del vértice
- * no visitado con menor distancia se realiza mediante búsqueda lineal.
+ * The algorithm computes the minimum distance from a source vertex
+ * to all other vertices in the graph. The selection of the unvisited
+ * vertex with the smallest tentative distance is performed by linear search.
  *
- * Se registran asignaciones, comparaciones y líneas ejecutadas.
+ * Assignments, comparisons, and executed lines are recorded.
  */
 public class Dijkstra {
 
@@ -21,45 +21,50 @@ public class Dijkstra {
     private int[] distancias;
 
     /**
-     * Ejecuta el algoritmo de Dijkstra desde un vértice de origen.
+     * Executes Dijkstra's algorithm from a source vertex.
      *
-     * @param matrizAdyacencia matriz ponderada que representa el grafo.
-     * @param origen índice del vértice desde el cual inicia el algoritmo.
+     * @param matrizAdyacencia weighted matrix that represents the graph.
+     * @param origen index of the vertex from which the algorithm starts.
      */
     public void ejecutar(int[][] matrizAdyacencia, int origen) {
 
-        // Reinicio de instrumentos de medición.
+        // Reset measurement instruments before starting a new execution.
         asignaciones = 0;
         comparaciones = 0;
         lineasEjecutadas = 0;
 
-        // Paso de los dos parámetros por valor.
+        // Count the assignment produced by passing both parameters by value.
         asignaciones += 2;
 
-        // Ejecución de la cabecera del método.
+        // Count the execution of the method header.
         lineasEjecutadas++;
 
+        // Obtain the number of vertices represented by the adjacency matrix.
         int cantidadVertices = matrizAdyacencia.length;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Allocate the array that stores tentative minimum distances.
         distancias = new int[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
 
+        // Create the structure used to mark vertices whose distance is final.
         boolean[] visitados = new boolean[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
 
+        // Define the value used to represent an initially unreachable vertex.
         int infinito = Integer.MAX_VALUE;
         asignaciones++;
         lineasEjecutadas++;
 
-        // Inicializa todas las distancias con un valor equivalente a infinito.
+        // Start initialization from the first vertex.
         int vertice = 0;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Initialize every distance with the value representing infinity.
         while (vertice < cantidadVertices) {
             comparaciones++;
             lineasEjecutadas++;
@@ -73,100 +78,123 @@ public class Dijkstra {
             lineasEjecutadas++;
         }
 
+        // Count the final false evaluation of the initialization loop.
         comparaciones++;
         lineasEjecutadas++;
 
+        // The distance from the source vertex to itself is zero.
         distancias[origen] = 0;
         asignaciones++;
         lineasEjecutadas++;
 
+        // Initialize the number of completed Dijkstra iterations.
         int iteracion = 0;
         asignaciones++;
         lineasEjecutadas++;
 
         /*
-         * En cada iteración se selecciona el vértice no visitado
-         * con la menor distancia tentativa y posteriormente
-         * se actualizan las distancias de sus vecinos.
+         * In each iteration, the unvisited vertex with the smallest
+         * tentative distance is selected and then the distances of
+         * its neighbors are updated.
          */
         while (iteracion < cantidadVertices) {
             comparaciones++;
             lineasEjecutadas++;
 
+            // No current vertex has been selected yet.
             int actual = -1;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Start the search using infinity as the smallest known distance.
             int menorDistancia = infinito;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Begin the linear search from the first vertex.
             int candidato = 0;
             asignaciones++;
             lineasEjecutadas++;
 
             /*
-             * Busca linealmente el vértice no visitado
-             * con menor distancia tentativa.
+             * Linearly search for the unvisited vertex
+             * with the smallest tentative distance.
              */
             while (candidato < cantidadVertices) {
                 comparaciones++;
                 lineasEjecutadas++;
 
+                // Check whether the candidate has not been finalized.
                 comparaciones++;
                 lineasEjecutadas++;
 
                 if (!visitados[candidato]) {
+
+                    // Compare its distance with the smallest one found so far.
                     comparaciones++;
                     lineasEjecutadas++;
 
                     if (distancias[candidato] < menorDistancia) {
+
+                        // Store the new smallest tentative distance.
                         menorDistancia = distancias[candidato];
                         asignaciones++;
                         lineasEjecutadas++;
 
+                        // Store the corresponding vertex.
                         actual = candidato;
                         asignaciones++;
                         lineasEjecutadas++;
                     }
                 }
 
+                // Continue with the next candidate vertex.
                 candidato++;
                 asignaciones++;
                 lineasEjecutadas++;
             }
 
+            // Count the final false evaluation of the candidate search loop.
             comparaciones++;
             lineasEjecutadas++;
 
+            // Mark the selected vertex as finalized.
             visitados[actual] = true;
             asignaciones++;
             lineasEjecutadas++;
 
+            // Begin examining possible neighbors from vertex zero.
             int vecino = 0;
             asignaciones++;
             lineasEjecutadas++;
 
             /*
-             * Recorre los posibles vecinos del vértice seleccionado
-             * y realiza la relajación de las distancias.
+             * Traverse the possible neighbors of the selected vertex
+             * and perform distance relaxation when applicable.
              */
             while (vecino < cantidadVertices) {
                 comparaciones++;
                 lineasEjecutadas++;
 
+                // Ignore vertices whose shortest distance is already final.
                 comparaciones++;
                 lineasEjecutadas++;
 
                 if (!visitados[vecino]) {
+
+                    // Check whether an edge exists to the possible neighbor.
                     comparaciones++;
                     lineasEjecutadas++;
 
                     if (matrizAdyacencia[actual][vecino] != 0) {
+
+                        // Ensure that the selected vertex is reachable.
                         comparaciones++;
                         lineasEjecutadas++;
 
                         if (distancias[actual] != infinito) {
+
+                            // Calculate the distance obtained through the current vertex.
                             int nuevaDistancia =
                                     distancias[actual]
                                             + matrizAdyacencia[actual][vecino];
@@ -174,10 +202,13 @@ public class Dijkstra {
                             asignaciones++;
                             lineasEjecutadas++;
 
+                            // Check whether the new route improves the known distance.
                             comparaciones++;
                             lineasEjecutadas++;
 
                             if (nuevaDistancia < distancias[vecino]) {
+
+                                // Update the tentative shortest distance.
                                 distancias[vecino] = nuevaDistancia;
                                 asignaciones++;
                                 lineasEjecutadas++;
@@ -186,56 +217,64 @@ public class Dijkstra {
                     }
                 }
 
+                // Continue with the next possible neighbor.
                 vecino++;
                 asignaciones++;
                 lineasEjecutadas++;
             }
 
+            // Count the final false evaluation of the neighbor loop.
             comparaciones++;
             lineasEjecutadas++;
 
+            // Advance to the next main iteration.
             iteracion++;
             asignaciones++;
             lineasEjecutadas++;
         }
 
+        // Count the final false evaluation of the main Dijkstra loop.
         comparaciones++;
         lineasEjecutadas++;
     }
 
     /**
-     * Devuelve las distancias mínimas calculadas desde el vértice de origen.
+     * Returns the minimum distances calculated from the source vertex.
      *
-     * @return arreglo con las distancias mínimas.
+     * @return array containing the minimum distances.
      */
     public int[] getDistancias() {
+        // Return the distances produced by the latest execution.
         return distancias;
     }
 
     /**
-     * Devuelve la cantidad de asignaciones realizadas.
+     * Returns the number of assignments performed by Dijkstra's algorithm.
      *
-     * @return cantidad de asignaciones.
+     * @return number of assignments.
      */
     public long getAsignaciones() {
+        // Return the assignment counter.
         return asignaciones;
     }
 
     /**
-     * Devuelve la cantidad de comparaciones realizadas.
+     * Returns the number of comparisons performed by Dijkstra's algorithm.
      *
-     * @return cantidad de comparaciones.
+     * @return number of comparisons.
      */
     public long getComparaciones() {
+        // Return the comparison counter.
         return comparaciones;
     }
 
     /**
-     * Devuelve la cantidad de líneas ejecutadas.
+     * Returns the number of lines executed by Dijkstra's algorithm.
      *
-     * @return cantidad de líneas ejecutadas.
+     * @return number of executed lines.
      */
     public long getLineasEjecutadas() {
+        // Return the executed-line counter.
         return lineasEjecutadas;
     }
 }
