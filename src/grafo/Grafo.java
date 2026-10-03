@@ -2,11 +2,15 @@ package grafo;
 
 /**
  * Start date: 25/09/2026
- * Last modification date: 02/10/2026
+ * Last modification date: 03/10/2026
  *
  * Represents a complete, weighted, undirected graph using an adjacency
  * matrix. The class stores the number of vertices and the weights of
  * the graph edges.
+ *
+ * Edge weights are stored as bytes because the project limits them to
+ * values from 5 to 55. This reduces the memory required by the matrix
+ * while preserving direct access to every adjacency position.
  *
  * This class is used by BFS, DFS, Dijkstra, and Bellman-Ford as the
  * common representation of the input data.
@@ -14,7 +18,7 @@ package grafo;
 public class Grafo {
 
     private final int cantidadVertices;
-    private final int[][] matrizAdyacencia;
+    private final byte[][] matrizAdyacencia;
 
     /**
      * Creates a graph with the specified number of vertices and initializes
@@ -29,7 +33,7 @@ public class Grafo {
 
         // Create the square matrix that stores edge weights.
         this.matrizAdyacencia =
-                new int[cantidadVertices][cantidadVertices];
+                new byte[cantidadVertices][cantidadVertices];
     }
 
     /**
@@ -48,7 +52,7 @@ public class Grafo {
      *
      * @return adjacency matrix containing the edge weights
      */
-    public int[][] getMatrizAdyacencia() {
+    public byte[][] getMatrizAdyacencia() {
 
         // Return the matrix used by the graph algorithms.
         return matrizAdyacencia;
@@ -66,9 +70,9 @@ public class Grafo {
     void establecerArista(int origen, int destino, int peso) {
 
         // Store the edge from the source vertex to the destination vertex.
-        matrizAdyacencia[origen][destino] = peso;
+        matrizAdyacencia[origen][destino] = (byte) peso;
 
         // Store the same edge in the opposite direction.
-        matrizAdyacencia[destino][origen] = peso;
+        matrizAdyacencia[destino][origen] = (byte) peso;
     }
 }

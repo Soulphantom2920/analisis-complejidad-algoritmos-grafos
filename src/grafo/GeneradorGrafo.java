@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * Start date: 25/09/2026
- * Last modification date: 02/10/2026
+ * Last modification date: 03/10/2026
  *
  * Generates the graphs used as input data for BFS, DFS, Dijkstra,
  * and Bellman-Ford.
@@ -48,7 +48,7 @@ public class GeneradorGrafo {
     private Grafo generarGrafoFijo() {
 
         // Define the fixed symmetric weight matrix used for the test.
-        int[][] pesosFijos = {
+        byte[][] pesosFijos = {
                 {0, 12, 27, 35, 18, 44, 23, 51, 16, 39},
                 {12, 0, 31, 14, 48, 25, 37, 19, 53, 28},
                 {27, 31, 0, 46, 11, 34, 55, 22, 41, 17},

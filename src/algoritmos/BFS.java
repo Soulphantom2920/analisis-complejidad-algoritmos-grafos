@@ -2,14 +2,15 @@ package algoritmos;
 
 /**
  * Start date: 26/09/2026
- * Last modification date: 02/10/2026
+ * Last modification date: 03/10/2026
  *
  * Implements the Breadth-First Search (BFS) algorithm iteratively
  * over an adjacency matrix.
  *
- * The queue used by BFS is implemented with an array and two
- * indices so that all operations performed by the algorithm
- * are explicit and can be measured according to the course methodology.
+ * The traversal array is also used as the array-based FIFO queue,
+ * avoiding a second array that would store the same vertex order.
+ * The execution stops when every vertex has already been discovered,
+ * because no later queue processing can add a new vertex to the traversal.
  *
  * Assignments, comparisons, and executed lines are recorded.
  */
@@ -27,7 +28,7 @@ public class BFS {
      * @param matrizAdyacencia matrix that represents the graph.
      * @param origen index of the vertex from which the traversal starts.
      */
-    public void ejecutar(int[][] matrizAdyacencia, int origen) {
+    public void ejecutar(byte[][] matrizAdyacencia, int origen) {
 
         // Reset measurement instruments before starting a new execution.
         asignaciones = 0;
@@ -50,12 +51,10 @@ public class BFS {
         asignaciones++;
         lineasEjecutadas++;
 
-        // Create the array-based queue used by the iterative BFS.
-        int[] cola = new int[cantidadVertices];
-        asignaciones++;
-        lineasEjecutadas++;
-
-        // Allocate the array that stores the traversal result.
+        /*
+         * Allocate the traversal array. It also works as the BFS queue,
+         * because FIFO insertion order is the same as BFS traversal order.
+         */
         recorrido = new int[cantidadVertices];
         asignaciones++;
         lineasEjecutadas++;
@@ -70,18 +69,13 @@ public class BFS {
         asignaciones++;
         lineasEjecutadas++;
 
-        // Initialize the position used to store vertices in the traversal.
-        int indiceRecorrido = 0;
-        asignaciones++;
-        lineasEjecutadas++;
-
         // Mark the source vertex as visited.
         visitados[origen] = true;
         asignaciones++;
         lineasEjecutadas++;
 
-        // Insert the source vertex into the queue.
-        cola[fin] = origen;
+        // Insert the source vertex into the queue and traversal array.
+        recorrido[fin] = origen;
         asignaciones++;
         lineasEjecutadas++;
 
@@ -98,22 +92,12 @@ public class BFS {
             lineasEjecutadas++;
 
             // Remove the next vertex from the front of the queue.
-            int actual = cola[frente];
+            int actual = recorrido[frente];
             asignaciones++;
             lineasEjecutadas++;
 
             // Advance the queue front.
             frente++;
-            asignaciones++;
-            lineasEjecutadas++;
-
-            // Store the processed vertex in traversal order.
-            recorrido[indiceRecorrido] = actual;
-            asignaciones++;
-            lineasEjecutadas++;
-
-            // Advance the next position of the traversal array.
-            indiceRecorrido++;
             asignaciones++;
             lineasEjecutadas++;
 
@@ -146,8 +130,8 @@ public class BFS {
                         asignaciones++;
                         lineasEjecutadas++;
 
-                        // Insert the vertex into the BFS queue.
-                        cola[fin] = vecino;
+                        // Insert the vertex into the queue and traversal array.
+                        recorrido[fin] = vecino;
                         asignaciones++;
                         lineasEjecutadas++;
 
@@ -167,6 +151,18 @@ public class BFS {
             // Count the final false evaluation of the neighbor loop.
             comparaciones++;
             lineasEjecutadas++;
+
+            /*
+             * Stop when every vertex has already been discovered.
+             * The traversal array already contains the complete BFS order.
+             */
+            comparaciones++;
+            lineasEjecutadas++;
+
+            if (fin == cantidadVertices) {
+                lineasEjecutadas++;
+                return;
+            }
         }
 
         // Count the final false evaluation of the main BFS loop.

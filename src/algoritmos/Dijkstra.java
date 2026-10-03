@@ -2,13 +2,15 @@ package algoritmos;
 
 /**
  * Start date: 28/09/2026
- * Last modification date: 02/10/2026
+ * Last modification date: 03/10/2026
  *
  * Implements Dijkstra's algorithm over an adjacency matrix.
  *
  * The algorithm computes the minimum distance from a source vertex
  * to all other vertices in the graph. The selection of the unvisited
  * vertex with the smallest tentative distance is performed by linear search.
+ * A maximum of n - 1 vertices are finalized because the only remaining
+ * vertex already has its final distance after all previous relaxations.
  *
  * Assignments, comparisons, and executed lines are recorded.
  */
@@ -26,7 +28,7 @@ public class Dijkstra {
      * @param matrizAdyacencia weighted matrix that represents the graph.
      * @param origen index of the vertex from which the algorithm starts.
      */
-    public void ejecutar(int[][] matrizAdyacencia, int origen) {
+    public void ejecutar(byte[][] matrizAdyacencia, int origen) {
 
         // Reset measurement instruments before starting a new execution.
         asignaciones = 0;
@@ -93,11 +95,10 @@ public class Dijkstra {
         lineasEjecutadas++;
 
         /*
-         * In each iteration, the unvisited vertex with the smallest
-         * tentative distance is selected and then the distances of
-         * its neighbors are updated.
+         * Finalize at most n - 1 vertices. After those iterations,
+         * the only remaining reachable vertex already has its final distance.
          */
-        while (iteracion < cantidadVertices) {
+        while (iteracion < cantidadVertices - 1) {
             comparaciones++;
             lineasEjecutadas++;
 
@@ -158,6 +159,18 @@ public class Dijkstra {
             comparaciones++;
             lineasEjecutadas++;
 
+            /*
+             * Stop if no reachable unvisited vertex remains.
+             * A selected vertex necessarily has a finite tentative distance.
+             */
+            comparaciones++;
+            lineasEjecutadas++;
+
+            if (actual == -1) {
+                lineasEjecutadas++;
+                return;
+            }
+
             // Mark the selected vertex as finalized.
             visitados[actual] = true;
             asignaciones++;
@@ -188,31 +201,24 @@ public class Dijkstra {
 
                     if (matrizAdyacencia[actual][vecino] != 0) {
 
-                        // Ensure that the selected vertex is reachable.
+                        // Calculate the distance obtained through the current vertex.
+                        int nuevaDistancia =
+                                distancias[actual]
+                                        + matrizAdyacencia[actual][vecino];
+
+                        asignaciones++;
+                        lineasEjecutadas++;
+
+                        // Check whether the new route improves the known distance.
                         comparaciones++;
                         lineasEjecutadas++;
 
-                        if (distancias[actual] != infinito) {
+                        if (nuevaDistancia < distancias[vecino]) {
 
-                            // Calculate the distance obtained through the current vertex.
-                            int nuevaDistancia =
-                                    distancias[actual]
-                                            + matrizAdyacencia[actual][vecino];
-
+                            // Update the tentative shortest distance.
+                            distancias[vecino] = nuevaDistancia;
                             asignaciones++;
                             lineasEjecutadas++;
-
-                            // Check whether the new route improves the known distance.
-                            comparaciones++;
-                            lineasEjecutadas++;
-
-                            if (nuevaDistancia < distancias[vecino]) {
-
-                                // Update the tentative shortest distance.
-                                distancias[vecino] = nuevaDistancia;
-                                asignaciones++;
-                                lineasEjecutadas++;
-                            }
                         }
                     }
                 }

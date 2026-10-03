@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 /**
  * Start date: 26/09/2026
- * Last modification date: 02/10/2026
+ * Last modification date: 03/10/2026
  *
  * Entry point of the project.
  * Automatically generates the required graphs and executes the algorithms
@@ -91,7 +91,7 @@ public class Main {
             }
 
             // Obtain the common adjacency matrix used by both algorithms.
-            int[][] matrizAdyacencia =
+            byte[][] matrizAdyacencia =
                     grafo.getMatrizAdyacencia();
 
             System.out.println("-------------------- BFS --------------------");
@@ -161,7 +161,7 @@ public class Main {
 
                 // Print the physical NCLOC previously determined for BFS.
                 System.out.println(
-                        "Líneas código:          103"
+                        "Líneas código:          97"
                 );
             }
             catch (OutOfMemoryError error) {
@@ -250,7 +250,7 @@ public class Main {
 
                 // Print the physical NCLOC previously determined for Dijkstra.
                 System.out.println(
-                        "Líneas código:          139"
+                        "Líneas código:          141"
                 );
             }
             catch (OutOfMemoryError error) {
