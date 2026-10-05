@@ -1,6 +1,8 @@
 package ejecucion;
 
 import algoritmos.BFS;
+import algoritmos.BellmanFord;
+import algoritmos.DFS;
 import algoritmos.Dijkstra;
 import grafo.GeneradorGrafo;
 import grafo.Grafo;
@@ -10,18 +12,17 @@ import java.util.Arrays;
 
 /**
  * Start date: 26/09/2026
- * Last modification date: 03/10/2026
+ * Last modification date: 05/10/2026
  *
  * Entry point of the project.
- * Automatically generates the required graphs and executes the algorithms
- * without requesting data from the user.
- *
- * Currently executes BFS and Dijkstra for the sizes defined by the project.
+ * Automatically generates the required graphs and executes BFS, DFS,
+ * Dijkstra, and Bellman-Ford without requesting data from the user.
  */
 public class Main {
 
     /**
-     * Automatically executes BFS and Dijkstra for the established sizes.
+     * Automatically executes the four graph algorithms for the established
+     * project sizes.
      *
      * The complete algorithm response is displayed for the fixed graph
      * of 10 vertices. For the remaining executable sizes, the required
@@ -46,7 +47,7 @@ public class Main {
                 100000
         };
 
-        // Use vertex zero as the common source for both algorithms.
+        // Use vertex zero as the common source for all four algorithms.
         int origen = 0;
 
         // Create the component responsible for generating all input graphs.
@@ -67,8 +68,8 @@ public class Main {
             try {
 
                 /*
-                 * Generate the input graph before measuring either algorithm
-                 * so graph construction is excluded from their execution time.
+                 * Generate the input graph before measuring any algorithm
+                 * so graph construction is excluded from execution time.
                  */
                 grafo =
                         generadorGrafo.generarGrafo(cantidadVertices);
@@ -76,21 +77,29 @@ public class Main {
             catch (OutOfMemoryError error) {
 
                 /*
-                 * If the graph itself cannot be created, neither algorithm
-                 * can receive valid input for this size.
+                 * If the graph itself cannot be created, none of the
+                 * algorithms can receive valid input for this size.
                  */
                 System.out.println("-------------------- BFS --------------------");
+                System.out.println("No se obtuvo respuesta.");
+
+                System.out.println();
+                System.out.println("-------------------- DFS --------------------");
                 System.out.println("No se obtuvo respuesta.");
 
                 System.out.println();
                 System.out.println("----------------- DIJKSTRA ------------------");
                 System.out.println("No se obtuvo respuesta.");
 
+                System.out.println();
+                System.out.println("-------------- BELLMAN-FORD -----------------");
+                System.out.println("No se obtuvo respuesta.");
+
                 // Continue with the next required graph size.
                 continue;
             }
 
-            // Obtain the common adjacency matrix used by both algorithms.
+            // Obtain the common adjacency matrix used by all algorithms.
             byte[][] matrizAdyacencia =
                     grafo.getMatrizAdyacencia();
 
@@ -169,6 +178,86 @@ public class Main {
                 /*
                  * Report failure only for BFS if the graph exists
                  * but BFS cannot complete because of memory exhaustion.
+                 */
+                System.out.println("No se obtuvo respuesta.");
+            }
+
+            System.out.println();
+            System.out.println("-------------------- DFS --------------------");
+
+            try {
+
+                // Create a new DFS instance for the current execution.
+                DFS dfs = new DFS();
+
+                /*
+                 * Measure only the execution of DFS.
+                 * Graph generation and console output remain outside
+                 * the measured interval.
+                 */
+                long inicioTiempoDfs = System.nanoTime();
+                dfs.ejecutar(matrizAdyacencia, origen);
+                long finTiempoDfs = System.nanoTime();
+
+                // Calculate the elapsed wall-clock time in nanoseconds.
+                long tiempoDfs =
+                        finTiempoDfs - inicioTiempoDfs;
+
+                /*
+                 * Store all measurements after the timed execution
+                 * has already finished.
+                 */
+                Metricas metricasDfs = new Metricas(
+                        dfs.getAsignaciones(),
+                        dfs.getComparaciones(),
+                        dfs.getLineasEjecutadas(),
+                        tiempoDfs
+                );
+
+                /*
+                 * Display the complete DFS response only for the fixed
+                 * 10-vertex graph, where the result can be inspected directly.
+                 */
+                if (cantidadVertices == 10) {
+                    System.out.println(
+                            "Recorrido: "
+                                    + Arrays.toString(
+                                    dfs.getRecorrido()
+                            )
+                    );
+                }
+
+                // Print the empirical measurements required for DFS.
+                System.out.println(
+                        "Asignaciones:          "
+                                + metricasDfs.getAsignaciones()
+                );
+
+                System.out.println(
+                        "Comparaciones:         "
+                                + metricasDfs.getComparaciones()
+                );
+
+                System.out.println(
+                        "Líneas ejecutadas:     "
+                                + metricasDfs.getLineasEjecutadas()
+                );
+
+                System.out.println(
+                        "Tiempo ejecución (ns): "
+                                + metricasDfs.getTiempoNanosegundos()
+                );
+
+                // Print the physical NCLOC determined for DFS.
+                System.out.println(
+                        "Líneas código:          133"
+                );
+            }
+            catch (OutOfMemoryError error) {
+
+                /*
+                 * Report failure only for DFS if the graph exists
+                 * but DFS cannot complete because of memory exhaustion.
                  */
                 System.out.println("No se obtuvo respuesta.");
             }
@@ -258,6 +347,100 @@ public class Main {
                 /*
                  * Report failure only for Dijkstra if the graph exists
                  * but Dijkstra cannot complete because of memory exhaustion.
+                 */
+                System.out.println("No se obtuvo respuesta.");
+            }
+
+            System.out.println();
+            System.out.println("-------------- BELLMAN-FORD -----------------");
+
+            try {
+
+                // Create a new Bellman-Ford instance for the current execution.
+                BellmanFord bellmanFord = new BellmanFord();
+
+                /*
+                 * Measure only the execution of Bellman-Ford.
+                 * Input generation and result printing remain outside
+                 * the measured interval.
+                 */
+                long inicioTiempoBellmanFord =
+                        System.nanoTime();
+
+                bellmanFord.ejecutar(
+                        matrizAdyacencia,
+                        origen
+                );
+
+                long finTiempoBellmanFord =
+                        System.nanoTime();
+
+                // Calculate the elapsed wall-clock time in nanoseconds.
+                long tiempoBellmanFord =
+                        finTiempoBellmanFord
+                                - inicioTiempoBellmanFord;
+
+                /*
+                 * Store all measurements after the timed execution
+                 * has already finished.
+                 */
+                Metricas metricasBellmanFord =
+                        new Metricas(
+                                bellmanFord.getAsignaciones(),
+                                bellmanFord.getComparaciones(),
+                                bellmanFord.getLineasEjecutadas(),
+                                tiempoBellmanFord
+                        );
+
+                /*
+                 * Display the complete shortest-distance result only for
+                 * the fixed 10-vertex graph, where it can be inspected directly.
+                 */
+                if (cantidadVertices == 10) {
+                    System.out.println(
+                            "Distancias: "
+                                    + Arrays.toString(
+                                    bellmanFord.getDistancias()
+                            )
+                    );
+
+                    System.out.println(
+                            "Ciclo negativo: "
+                                    + bellmanFord.tieneCicloNegativo()
+                    );
+                }
+
+                // Print the empirical measurements required for Bellman-Ford.
+                System.out.println(
+                        "Asignaciones:          "
+                                + metricasBellmanFord.getAsignaciones()
+                );
+
+                System.out.println(
+                        "Comparaciones:         "
+                                + metricasBellmanFord.getComparaciones()
+                );
+
+                System.out.println(
+                        "Líneas ejecutadas:     "
+                                + metricasBellmanFord.getLineasEjecutadas()
+                );
+
+                System.out.println(
+                        "Tiempo ejecución (ns): "
+                                + metricasBellmanFord.getTiempoNanosegundos()
+                );
+
+                // Print the physical NCLOC determined for Bellman-Ford.
+                System.out.println(
+                        "Líneas código:          173"
+                );
+            }
+            catch (OutOfMemoryError error) {
+
+                /*
+                 * Report failure only for Bellman-Ford if the graph exists
+                 * but the algorithm cannot complete because of memory exhaustion.
                  */
                 System.out.println("No se obtuvo respuesta.");
             }
